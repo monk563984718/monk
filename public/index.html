@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico"> -->
+    <!-- <link rel="shortcut icon" type="image/x-icon" :href="taxtData" /> -->
+    <!-- <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" /> -->
+    <!-- <title>店小二</title> -->
+    <!-- <title><%= webpackConfig.name %></title> -->
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= webpackConfig.name %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+  <script>
+    var titledata = window.location.href
+    ;(function() {
+      const urlHeard = 'https://web.dxer168.com/api/'
+      var url = urlHeard + 'common/getWebsiteInfo'
+      var xhr = new XMLHttpRequest()
+      var data = {
+        token: 'BTOKEN:E45C5F5F0E854D55BD002EDC511C170F'
+      }
+      xhr.open('POST', url, true)
+      xhr.setRequestHeader('content-type', 'application/json')
+      xhr.onload = function(e) {
+        if(xhr.status == 200 && xhr.readyState == 4){
+          var taxtData = xhr.responseText;
+          var taxtDatas = ''
+          taxtDatas = JSON.parse(taxtData)
+          var head = document.getElementsByTagName('head')[0]
+            // cssURL = 'https://test-1252901182.cos.ap-guangzhou.myqcloud.com/images/a58a2a6fe60d49b1bcfcb53a4fe6b72a.png',
+            cssURL = taxtDatas.data.logoUrl,
+            linkTag = document.createElement('link');
+            linkTag.id = 'dynamic-style';
+            linkTag.href = cssURL;
+            linkTag.setAttribute('rel','shortcut icon');
+            linkTag.setAttribute('media','all');
+            linkTag.setAttribute('type','image/x-icon');
+            head.appendChild(linkTag);
+            titleTag = document.createElement('title');
+            titleTag.text = taxtDatas.data.websiteName
+            head.appendChild(titleTag);
+          }
+      }
+      xhr.send(JSON.stringify(data))
+      // 登陆机型判断
+      var titledata1 = titledata.split('//')
+      var titledata2 = titledata1[1].split('/')
+      var titledata3 = titledata2[0].split('.')
+      var titledata4 = ''
+      if(titledata3[1] === 'dxer168'){
+        titledata4 = 'app.' + titledata3[1] + '.' + titledata3[2]
+      }else{
+        titledata4 = 'tgy.' + titledata3[1] + '.' + titledata3[2]
+      }
+      var titledata5 = 'http://' + titledata4 + '/cz/index.html'
+      var that = this
+      var os;
+      if (navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Linux') > -1) {
+        os = 'Android';
+         window.location.href = titledata5
+    } else if (navigator.userAgent.indexOf('iPhone') > -1||navigator.userAgent.indexOf('iPad') > -1) {
+        os = 'iOS';
+        window.location.href = titledata5
+    } else if (navigator.userAgent.indexOf('Windows Phone') > -1) {
+        os = 'WP';
+        window.location.href = titledata5
+    } else {
+        os = 'Others';
+    }
+    })();
+   
+  </script>
+</html>
